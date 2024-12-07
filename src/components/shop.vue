@@ -5,13 +5,22 @@ import axios from 'axios'
 import { inject } from 'vue'
 import MapContainer from "./widget/MapContainer.vue";
 import { useTitle } from '@vueuse/core'
+
 const title = useTitle()
 
 const route = useRoute()
 const api_endpoint = inject('api_endpoint')
 const shop = ref(null)
 const error = ref('')
+const dialog = ref(false)
+const searchQuery = ref('')
+const filteredTagsAndIPs = ref([])
 const isAndroid = /android/i.test(navigator.userAgent)
+
+import { useOptionStore } from '../store' // 确保路径正确
+const optionStore = useOptionStore() // 使用 Pinia store
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 onMounted(async () => {
   const sid = route.params.sid
@@ -24,7 +33,8 @@ onMounted(async () => {
       params: { sid }
     })
     shop.value = response.data
-    title.value = shop.value.shop_name+" 谷店详情 | "+title.value;
+    title.value = shop.value.shop_name + " 谷店详情 | " + title.value;
+    updateFilteredTagsAndIPs();
   } catch (err) {
     if (err.response && err.response.status === 404) {
       error.value = '该谷店不存在'
@@ -46,6 +56,37 @@ const getGaodeMapUrl = (lat, lng, name) => {
 const getButtonLabel = () => {
   return isAndroid ? '前往高德地图APP' : '前往高德地图';
 }
+
+const openDialog = () => {
+  dialog.value = true
+}
+
+const closeDialog = () => {
+  dialog.value = false
+}
+
+const updateFilteredTagsAndIPs = () => {
+  if (shop.value) {
+    const tagsAndIPs = [...shop.value.tags];
+    filteredTagsAndIPs.value = tagsAndIPs.filter(item =>
+        item.toLowerCase().includes(searchQuery.value.toLowerCase())
+    );
+  }
+}
+
+
+
+const to_by_tag_page = (tag) => {
+  optionStore.setCurrentTag(tag,true);
+  router.push('/by_tag');
+}
+const edit_infos = () => {
+  router.push('/maintenance/info/' + shop.value.sid);
+}
+const edit_tags = () => {
+  router.push('/maintenance/tags/' + shop.value.sid);
+}
+
 </script>
 
 <template>
@@ -74,12 +115,15 @@ const getButtonLabel = () => {
                   <v-list-item-subtitle>{{ shop.tel_of_leader }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item>
+              <v-btn variant="text" @click="edit_infos">
+                修改谷店信息
+              </v-btn>
+              <v-list-item @click="openDialog">
                 <v-list-item-icon>
                   <v-icon>mdi-tag</v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
-                  <v-list-item-title>标签</v-list-item-title>
+                  <v-list-item-title>标签 (点击此处查看全部和修改)</v-list-item-title>
                   <v-list-item-subtitle>{{ shop.tags.join(', ') }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
@@ -104,6 +148,39 @@ const getButtonLabel = () => {
         </v-card>
       </v-col>
     </v-row>
+    <v-dialog v-model="dialog" max-width="500px" persistent>
+      <v-card rounded="lg">
+        <v-card-title>
+          标签和IP
+          <v-spacer></v-spacer>
+          <v-btn icon @click="closeDialog">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          &nbsp;
+          <v-btn icon @click="edit_tags">
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-card-text>
+          <v-text-field
+              v-model="searchQuery"
+              label="搜索..."
+              outlined
+              clearable
+              @input="updateFilteredTagsAndIPs"
+          ></v-text-field>
+          <div style="max-height: 300px; overflow-y: auto;">
+            <v-list>
+              <v-list-item v-for="(item, index) in filteredTagsAndIPs" :key="index" link @click="to_by_tag_page(item)">
+                <v-list-item-content>
+                  <v-list-item-title>{{ item }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </div>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 

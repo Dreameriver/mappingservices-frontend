@@ -19,7 +19,8 @@ import { createPinia } from 'pinia'
 
 const pinia = createPinia()
 
-const api_endpoint = 'https://api.comicmap.top'
+//const api_endpoint = 'https://api.comicmap.top'
+ const api_endpoint = 'http://localhost:3000'
 const app = createApp(App)
 app.provide('api_endpoint', api_endpoint)
 app.use(vuetify).use(router).use(pinia).mount('#app')

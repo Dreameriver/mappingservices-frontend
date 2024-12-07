@@ -51,6 +51,7 @@ watch(theme.global.name, (newTheme) => {
           <v-list-item prepend-icon="mdi-map-marker" title="按地区检索" link to="/by_region"></v-list-item>
           <v-list-item prepend-icon="mdi-tag" title="按标签/IP检索" link to="/by_tag"></v-list-item>
           <p class="divider_title">吃谷工具</p>
+          <v-list-item prepend-icon="mdi-plus" title="添加谷店" link to="/add_shop"></v-list-item>
           <v-list-item prepend-icon="mdi-package-variant" title="谷子查找" link disabled></v-list-item>
           <v-list-item prepend-icon="mdi-information" title="谷子信息" link disabled></v-list-item>
           <p class="divider_title">站点信息</p>
@@ -77,7 +78,7 @@ watch(theme.global.name, (newTheme) => {
       <v-container>
         <div class="text-center">
           <p>ComicMap Project - 全国谷店地图</p>
-          <p>ComicMap Beta v1.2.239(Regional pilot)</p>
+          <p>ComicMap Beta v1.4.12(Regional pilot)</p>
           <p>Copyright © 萌数次元Moedigital 2022-{{ new Date().getFullYear() }} 保留所有权利</p>
         </div>
       </v-container>

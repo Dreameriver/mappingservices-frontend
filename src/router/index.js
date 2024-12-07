@@ -5,6 +5,7 @@ import by_region from '../components/by_region.vue';
 import by_tag from '../components/by_tag.vue';
 import shop from '../components/shop.vue';
 import about from '../components/about.vue';
+import add_shop from '../components/add_shop.vue';
 const routes = [
     {
         path: '/',
@@ -27,9 +28,28 @@ const routes = [
         component: by_region
     },
     {
+      path: '/maintenance',
+      name: 'Maintenance',
+      children: [
+          {
+              path: 'tags/:sid',
+              component: () => import('../components/maintenance/tags.vue')
+          },
+          {
+              path: 'info/:sid',
+              component: () => import('../components/maintenance/shop_info.vue')
+          }
+          ],
+    },
+    {
         path: '/by_tag',
         name: 'by_tag',
         component: by_tag
+    },
+    {
+        path: '/add_shop',
+        name: 'add_shop',
+        component: add_shop
     },
     {
         path: '/about',

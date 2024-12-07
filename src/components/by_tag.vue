@@ -1,11 +1,12 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useOptionStore } from '../store' // 确保路径正确
 import axios from 'axios'
 import { inject } from 'vue'
 
 const OptionStore = useOptionStore()
 const tag = ref('')
+const subSearchTerm = ref('')
 const shops = ref([])
 const api_endpoint = inject('api_endpoint')
 
@@ -27,6 +28,13 @@ const onSearch = async () => {
     console.error('Error fetching shops:', error)
   }
 }
+
+const filteredShops = computed(() => {
+  return shops.value.filter(shop =>
+      shop.shop_name.toLowerCase().includes(subSearchTerm.value.toLowerCase()) ||
+      shop.location.toLowerCase().includes(subSearchTerm.value.toLowerCase())
+  )
+})
 </script>
 
 <template>
@@ -51,8 +59,17 @@ const onSearch = async () => {
         <v-card class="mt-4" v-if="shops.length > 0">
           <v-card-title>搜索结果</v-card-title>
           <v-card-text>
+            <v-form @submit.prevent="onSearch">
+              <v-text-field
+                  label="店铺名称或地址"
+                  variant="outlined"
+                  v-model="subSearchTerm"
+                  prepend-icon="mdi-magnify"
+                  clearable
+              ></v-text-field>
+            </v-form>
             <v-list dense>
-              <v-list-item v-for="shop in shops" :key="shop.sid" style="text-align: left" link :to="'/shop/'+shop.sid">
+              <v-list-item v-for="shop in filteredShops" :key="shop.sid" style="text-align: left" link :to="'/shop/'+shop.sid">
                 <v-list-item-content>
                   <v-list-item-title>{{ shop.shop_name }}</v-list-item-title>
                   <v-list-item-subtitle>{{ shop.location }}</v-list-item-subtitle>
