@@ -78,7 +78,7 @@ watch(theme.global.name, (newTheme) => {
       <v-container>
         <div class="text-center">
           <p>ComicMap Project - 全国谷店地图</p>
-          <p>ComicMap Beta v1.4.12(Regional pilot)</p>
+          <p>ComicMap Beta v1.4.18(Regional pilot)</p>
           <p>Copyright © 萌数次元Moedigital 2022-{{ new Date().getFullYear() }} 保留所有权利</p>
         </div>
       </v-container>

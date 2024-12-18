@@ -38,8 +38,8 @@ const fetchShopInfo = async () => {
     tel_of_leader.value = data.tel_of_leader
     location.value = data.location
     tags.value = data.tags.join(', ') // 假设tags是以逗号分隔的字符串
-    geo_l_x.value = data.geo_location_x
-    geo_l_y.value = data.geo_location_y
+    geo_l_x.value = parseFloat(data.geo_location_x) || 0 // 初始化为有效数字
+    geo_l_y.value = parseFloat(data.geo_location_y) || 0 // 初始化为有效数字
   } catch (error) {
     console.error('Error fetching shop info:', error)
     showSnackbar('获取店铺信息失败', 'error')
@@ -86,11 +86,11 @@ const showSnackbar = (message, color) => {
 
 // 处理地图选点组件返回的坐标
 const handlePickedX = (lng) => {
-  geo_l_x.value = lng
+  geo_l_x.value = parseFloat(lng) || 0 // 确保是有效数字
 }
 
 const handlePickedY = (lat) => {
-  geo_l_y.value = lat
+  geo_l_y.value = parseFloat(lat) || 0 // 确保是有效数字
 }
 
 // 加载Turnstile脚本
@@ -153,7 +153,7 @@ onMounted(() => {
                   <v-text-field
                       label="地理坐标X"
                       variant="outlined"
-                      v-model="geo_l_x"
+                      v-model.number="geo_l_x"
                       type="number"
                       prepend-icon="mdi-crosshairs-gps"
                       required
@@ -163,7 +163,7 @@ onMounted(() => {
                   <v-text-field
                       label="地理坐标Y"
                       variant="outlined"
-                      v-model="geo_l_y"
+                      v-model.number="geo_l_y"
                       type="number"
                       prepend-icon="mdi-crosshairs-gps"
                       required
@@ -171,7 +171,7 @@ onMounted(() => {
                 </v-col>
               </v-row>
               <MapSelector :initialGeoX="geo_l_x" :initialGeoY="geo_l_y" @update:PickedX="handlePickedX"
-                           @update:PickedY="handlePickedY"/>
+                           @update:PickedY="handlePickedY" v-if="geo_l_x && geo_l_y"/>
               <br><br>
               <div id="cf-turnstile-widget"/>
               <br><br>
