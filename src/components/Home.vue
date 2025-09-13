@@ -36,9 +36,9 @@ onMounted(async () => {
             class="mb-4 alert-custom"
             align="center"
             style="max-width: 850px"
-            text="ComicMap全国谷店地图正在在以下城市:青岛 试点,暂只能获取到该城市的谷店数据,其他城市将陆续开始测试"
-            title="区域测试中"
-            type="info"
+            text="ComicMap全国谷店地图在青岛的试点已结束,现正招募以下城市的谷店信息: 济南、日照、淄博、深圳、清远、厦门、福州、南昌"
+            title="区域测试即将结束"
+            type="warning"
         >
           <p>我们期待您的宝贵意见 <a href="https://jinshuju.net/f/aCOH2z" target="_blank" class="custom-link">意见与建议表单</a></p>
         </v-alert>

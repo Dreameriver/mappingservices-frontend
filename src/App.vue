@@ -29,7 +29,8 @@ watch(prefersDark, (isDark) => {
 watch(theme.global.name, (newTheme) => {
   localStorage.setItem('theme', newTheme)
 })
-
+console.log("萌数次元产品 - 全国谷店地图 PreView")
+console.log("青岛江愿文化发展有限公司/江愿集团(香港)有限公司 |  版权所有 © 2024 - " + new Date().getFullYear());
 </script>
 
 <template>
@@ -55,6 +56,7 @@ watch(theme.global.name, (newTheme) => {
           <v-list-item prepend-icon="mdi-package-variant" title="谷子查找" link disabled></v-list-item>
           <v-list-item prepend-icon="mdi-information" title="谷子信息" link disabled></v-list-item>
           <p class="divider_title">站点信息</p>
+          <v-list-item prepend-icon="mdi-view-list" title="版本信息" link to="/changelogs"></v-list-item>
           <v-list-item prepend-icon="mdi-information" title="关于" link to="/about"></v-list-item>
         </v-list-item-group>
       </v-list>
@@ -62,7 +64,7 @@ watch(theme.global.name, (newTheme) => {
 
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-app-bar-title>ComicMap 全国谷店地图 Beta</v-app-bar-title>
+      <v-app-bar-title>ComicMap 全国谷店地图</v-app-bar-title>
       <v-spacer></v-spacer>
       <v-btn icon @click="theme.global.name.value = theme.global.name.value === 'light' ? 'dark' : 'light'"><!-- 切换暗黑模式 -->
         <v-icon v-if="theme.global.name.value === 'light'">mdi-weather-night</v-icon>
@@ -78,7 +80,8 @@ watch(theme.global.name, (newTheme) => {
       <v-container>
         <div class="text-center">
           <p>ComicMap Project - 全国谷店地图</p>
-          <p>ComicMap Beta v1.4.18(Regional pilot)</p>
+          <p>ComicMap Beta v1.8.0</p>
+          <p>Vapor compatibility mode (including some virtual DOM components)</p>
           <p>Copyright © 萌数次元Moedigital 2022-{{ new Date().getFullYear() }} 保留所有权利</p>
         </div>
       </v-container>

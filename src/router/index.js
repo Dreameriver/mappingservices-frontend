@@ -52,6 +52,11 @@ const routes = [
         component: add_shop
     },
     {
+        path: '/changelogs',
+        name: 'changelogs',
+        component: () => import('../components/changelog.vue')
+    },
+    {
         path: '/about',
         name: 'About',
         component: about
